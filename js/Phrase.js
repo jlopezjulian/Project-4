@@ -56,3 +56,5 @@ showMatchedLetter(letter) {
   }
  }
 
+ console.log("hello");
+
