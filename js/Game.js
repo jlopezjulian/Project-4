@@ -3,12 +3,19 @@
  * Game.js */
 
 
-//declaring a game class 
+/*
+Game class constructor is made with the following properties:
+-missed to keep track of the missed guesses 
+-phrases that hold an array of phrases initialized by 
+-active phrase that is the phrase object in play, starting with null
+*/
+
+
 class Game {
     constructor(){
         this.missed = 0;
         this.phrases = [
-            new Phrase("I talk a lot, so I've learned to tune myself out."),
+            new Phrase("I talk a lot, so I learned to tune myself out."),
             new Phrase("I’m not superstitious, but I am a little stitious"),
             new Phrase("The worst thing about prison was the dementors."),
             new Phrase("Bears. Beets. Battlestar Galactica."),
@@ -16,6 +23,12 @@ class Game {
         ];
         this.activePhrase = null;
  }
+
+/*
+getRandomPhrase returns a random phrase from the array pf phrases in Games class phrases properties
+it is randomized by using the .random()
+*/
+
 
     getRandomPhrase(){
         let index = Math.floor(Math.random() * this.phrases.length);
@@ -49,7 +62,7 @@ if there are zero hidden letters then it wil return true (result in a win), else
     }
 
 /*
-removelife method removes a heart per player life lost and adds the count to missed
+removeLife method removes a heart per player life lost and adds the count to missed
 If there are more than 4 wrong selections (misses) than the gameOver method is called, finishing the game
 */
 
@@ -63,45 +76,59 @@ If there are more than 4 wrong selections (misses) than the gameOver method is c
     }
 
 /*
-completely stuck here....
+gameOver function shows the display screen for a winning score or a losing score dependant on lives lost 
+classes are selected and "flex" is shorthand for CSS flexbox, instead of leaving an empty string on line 84, flex is used as a value for the display
 */
     gameOver(gameWon){
-        const overlayGamePage = document.querySelector("overlay")
-        overlayGamePage.style.display = " ";
-            if(gameWon){
-            document.querySelector("game-over-message").textContent = "Congratulations, you have won the game!";
-            overlayGamePage.className.add("win");
-        }else{
-            document.querySelector("game-over-message").textContent = "Sorry, better luck next time!";
-            overlayGamePage.className.add("lose");
+        const overlayGamePage = document.querySelector("#overlay")
+        overlayGamePage.style.display = "flex";
+            if(gameWon === true){
+                document.querySelector("#game-over-message").textContent = "Congratulations, you have won the game!";
+                overlayGamePage.className = ("win");
+            }else{
+                document.querySelector("#game-over-message").textContent = "Sorry, better luck next time!";
+                overlayGamePage.className = ("lose");
         }
+        this.resetGame();
     }
 
-
-
-    //     // game.resetGame() eventually comes into play 
-    //     }}
 
 /*
 The handleInteraction method is what connects the Phrase and Game Phrases to ultimately make the game work 
 Initially, the button is disabled and through an if statement to check if the text content is found in the phrase 
-If the letter is not found in the phrase the class wrong is added and a player life is removed
-Else if, a letter does match in the phrase, a class chosen is added and a letter is shown 
-Finally, nested within the else statement, there is check to see if the overall game is won and if so, the gameOver function is called (true)
+If a letter does match in the phrase, a class chosen is added and a letter is shown 
+Additionally, nested within the else statement, there is a check to see if the overall game is won and if so, the gameOver function is called (true)
+Else if, if a letter is not found in the phrase the class wrong is added and a player life is removed
 */
-        
-    handleInteraction(button){
-        button.disabled = true;
-        const clickedButton = button.textContent;
-            if (this.activePhrase.checkLetter(clickedButton) === false){
-                button.classList.add('wrong');
-                this.removeLife();
-            } else {
-                button.classList.add('chosen');
-                this.activePhrase.showMatchedLetter(clickedButton);
-                if(this.checkForWin()){
-                this.gameOver(); //function does not work yet 
-                }
-            }
-    }}
 
+handleInteraction(button) {
+    button.disabled = true;
+    if (this.activePhrase.checkLetter(button.innerHTML)) {
+        this.activePhrase.showMatchedLetter(button.innerHTML);
+        button.classList.add('chosen');
+            if(this.checkForWin() === true) {
+                this.gameOver(true);
+            };
+    } else {            
+        button.classList.add('wrong');
+        this.removeLife();
+    }
+}
+
+/*
+resetGame() removes the wrong, chosen, and disabled attributes and then a for each method is used to iterate a liveHeart image to a life
+
+*/
+
+
+    resetGame(){
+                ul.innerHTML = '';
+            keyboardKeys.forEach(button => {
+                button.classList.remove('wrong');
+                button.classList.remove('chosen');
+                button.removeAttribute('disabled');
+            })
+                lives.forEach(lives =>{
+                    lives.src = "images/liveHeart.png";
+            })
+    }}    
