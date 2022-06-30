@@ -78,6 +78,7 @@ If there are more than 4 wrong selections (misses) than the gameOver method is c
 /*
 gameOver function shows the display screen for a winning score or a losing score dependant on lives lost 
 classes are selected and "flex" is shorthand for CSS flexbox, instead of leaving an empty string on line 84, flex is used as a value for the display
+https://www.w3schools.com/css/css3_flexbox.asp
 */
     gameOver(gameWon){
         const overlayGamePage = document.querySelector("#overlay")
